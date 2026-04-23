@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Certificate Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f4f6f9;
+}
+
+.header {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.container {
+    padding: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+th {
+    background: #111827;
+    color: white;
+    padding: 14px;
+    text-align: left;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.pending { background: #fef3c7; color: #92400e; }
+.verified { background: #d1fae5; color: #065f46; }
+.sent { background: #dbeafe; color: #1e40af; }
+.rejected { background: #fee2e2; color: #991b1b; }
+
+.btn {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.verify { background: #4f46e5; }
+.reject { background: #ef4444; }
+.view1 { background: #10b981; }
+.view2 { background: #f59e0b; }
+</style>
+</head>
+
+<body>
+
+<div class="header">
+📜 Certificate Verification Dashboard
+</div>
+
+<div class="container">
+
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Status</th>
+    <th>Actions</th>
+</tr>
+
+{% for r in records %}
+<tr>
+    <td>{{ r["Emp ID"] }}</td>
+    <td>{{ r["Name"] }}</td>
+    <td>{{ r["Email"] }}</td>
+
+    <td>
+        {% if r["Status"] == "PENDING" %}
+            <span class="badge pending">PENDING</span>
+        {% elif r["Status"] == "VERIFIED" %}
+            <span class="badge verified">VERIFIED</span>
+        {% elif r["Status"] == "REJECTED" %}
+            <span class="badge rejected">REJECTED</span>
+        {% else %}
+            <span class="badge sent">SENT</span>
+        {% endif %}
+    </td>
+
+    <td>
+
+        {% if r["Status"] == "PENDING" %}
+            <a class="btn verify" href="/verify/{{ r["Emp ID"] }}">Verify</a>
+            <a class="btn reject" href="/reject/{{ r["Emp ID"] }}">Reject</a>
+        {% else %}
+            <span style="color: gray;">No action</span>
+        {% endif %}
+
+        <!-- <a class="btn view1" target="_blank"
+           href="/view/{{ r["completion_cert"] }}">
+           View Completion
+        </a>
+
+        <a class="btn view2" target="_blank"
+           href="/view/{{ r["experience_cert"] }}">
+           View Experience
+        </a> -->
+        <a class="btn view1" target="_blank"
+           href="/view/{{ r['Emp ID'] }}/completion">
+           View Completion
+        </a>
+
+        <a class="btn view2" target="_blank"
+           href="/view/{{ r['Emp ID'] }}/experience">
+           View Experience
+        </a>
+
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+</div>
+
+</body>
+</html>
